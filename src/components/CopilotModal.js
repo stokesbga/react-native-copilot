@@ -122,7 +122,7 @@ class CopilotModal extends Component<Props, State> {
     const relativeToRight = Math.abs(center.x - layout.width);
 
     const verticalPosition = relativeToBottom > relativeToTop ? 'bottom' : 'top';
-    const horizontalPosition = relativeToLeft > relativeToRight ? 'left' : 'right';
+    const horizontalPosition = relativeToLeft >= relativeToRight ? 'left' : 'right';
 
     const tooltip = {};
     const arrow = {};
@@ -138,33 +138,38 @@ class CopilotModal extends Component<Props, State> {
     }
 
     tooltip.maxWidth = layout.width - MARGIN * 2;
-    if (horizontalPosition === "left") {
-      tooltip.right = Math.max(layout.width - (obj.left + obj.width), 0);
-      tooltip.right =
-        tooltip.right === 0
-          ? MARGIN
-          : layout.width - MARGIN * 2 + tooltip.right > layout.width - MARGIN * 2
-          ? null
-          : tooltip.right + MARGIN / 2;
-      if (!tooltip.right) {
-        delete tooltip.right;
-        tooltip.left = MARGIN;
-      }
+    if(this.props?.currentStep?.horizontalAlign === 'left') {
+      tooltip.left = MARGIN;
+      arrow.left = obj.left + obj.width / 2 - MARGIN / 2;
+    } else if(this.props?.currentStep?.horizontalAlign === 'right') {
+      tooltip.right = MARGIN;
       arrow.right = layout.width - (obj.left + obj.width / 2 + MARGIN / 2);
     } else {
-      tooltip.left = Math.max(obj.left, 0);
-      tooltip.left =
-        tooltip.left === 0
+      if (horizontalPosition === "left") {
+        tooltip.right = Math.max(layout.width - (obj.left + obj.width), 0);
+        tooltip.right =
+          tooltip.right === 0
+            ? MARGIN
+            : null
+        if (!tooltip.right) {
+          delete tooltip.right;
+          tooltip.left = MARGIN;
+        }
+        arrow.right = layout.width - (obj.left + obj.width / 2 + MARGIN / 2);
+      } else {
+        tooltip.left = Math.max(obj.left, 0);
+        tooltip.left =
+          tooltip.left === 0
           ? MARGIN
-          : layout.width - MARGIN * 2 + tooltip.left > layout.width - MARGIN * 2
-          ? null
-          : tooltip.left - MARGIN / 2;
-      if (!tooltip.left) {
-        delete tooltip.left;
-        tooltip.right = MARGIN;
+          : null
+        if (!tooltip.left) {
+          delete tooltip.left;
+          tooltip.right = MARGIN;
+        }
+        arrow.left = obj.left + obj.width / 2 - MARGIN / 2;
       }
-      arrow.left = obj.left + obj.width / 2 - MARGIN / 2;
     }
+
 
     const animate = {
       top: obj.top,
