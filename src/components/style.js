@@ -24,10 +24,10 @@ export default StyleSheet.create({
   },
   tooltip: {
     position: 'absolute',
-    paddingTop: 15,
+    paddingTop: 20,
     paddingHorizontal: 15,
     backgroundColor: '#fff',
-    borderRadius: 3,
+    borderRadius: 8,
     overflow: 'hidden',
   },
   tooltipText: {
