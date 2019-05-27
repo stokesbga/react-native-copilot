@@ -5,7 +5,9 @@ import type { CopilotContext } from '../types';
 
 type Props = {
   name: string,
+  title?: string,
   text: string,
+  customHeaderView?: React$Element,
   order: number,
   active?: boolean,
   _copilot: CopilotContext,
@@ -44,7 +46,9 @@ class ConnectedCopilotStep extends Component<Props> {
   register() {
     this.props._copilot.registerStep({
       name: this.props.name,
+      title: this.props.title,
       text: this.props.text,
+      customHeaderView: this.props.customHeaderView,
       order: this.props.order,
       target: this,
       wrapper: this.wrapper,
